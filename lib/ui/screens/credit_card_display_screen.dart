@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:u_credit_card/u_credit_card.dart';
 import '../../models/creditcard.dart';
 import '../../providers/credit_card_provider.dart';
+import '../../utils/card_utils.dart';
 
 class CreditCardDisplayScreen extends StatelessWidget {
   @override
@@ -18,34 +19,36 @@ class CreditCardDisplayScreen extends StatelessWidget {
         padding: EdgeInsets.all(16.0),
         child: creditCards.isNotEmpty
             ? ListView.builder(
-          itemCount: creditCards.length,
-          itemBuilder: (context, index) {
-            final creditCard = creditCards[index];
-            return Stack(
-              children: [
-                Container(
-                  width: double.infinity,
-                  margin: EdgeInsets.only(bottom: 20),
-                  child: CreditCardUi(
-                    topLeftColor: Colors.blue,
-                    cardHolderFullName: creditCard.cardHolderName,
-                    cardNumber: creditCard.cardNumber,
-                    validThru: creditCard.expiryDate,
-                  ),
-                ),
-                Align(
-                  alignment: FractionalOffset.topRight,
-                  child: Padding(
-                    padding: EdgeInsets.all(8),
-                    child: _DeleteCardButton(
-                      onPressed: () => _confirmDeleteCard(context, creditCard),
-                    ),
-                  ),
-                ),
-              ],
-            );
-          },
-        )
+                itemCount: creditCards.length,
+                itemBuilder: (context, index) {
+                  var creditCard = creditCards[index];
+                  return Stack(
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        margin: EdgeInsets.only(bottom: 20),
+                        child: CreditCardUi(
+                          topLeftColor: Colors.blue,
+                          cardHolderFullName: creditCard.cardHolderName,
+                          cardNumber:
+                              CardUtils.getCleanedNumber(creditCard.cardNumber),
+                          validThru: creditCard.expiryDate,
+                        ),
+                      ),
+                      Align(
+                        alignment: FractionalOffset.topRight,
+                        child: Padding(
+                          padding: EdgeInsets.all(8),
+                          child: _DeleteCardButton(
+                            onPressed: () =>
+                                _confirmDeleteCard(context, creditCard),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              )
             : _buildEmptyState(),
       ),
     );
@@ -80,7 +83,8 @@ class CreditCardDisplayScreen extends StatelessWidget {
   }
 
   void _deleteCard(BuildContext context, CreditCard card) {
-    final creditCardProvider = Provider.of<CreditCardProvider>(context, listen: false);
+    final creditCardProvider =
+        Provider.of<CreditCardProvider>(context, listen: false);
     creditCardProvider.removeCreditCard(card);
   }
 
@@ -96,7 +100,9 @@ class CreditCardDisplayScreen extends StatelessWidget {
 
 class _DeleteCardButton extends StatelessWidget {
   final VoidCallback onPressed;
+
   const _DeleteCardButton({required this.onPressed});
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

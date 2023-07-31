@@ -153,7 +153,7 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
                 child: CreditCardUi(
                   topLeftColor: Colors.blue,
                   cardHolderFullName: cardHolderName,
-                  cardNumber: cardNumber,
+                  cardNumber: CardUtils.getCleanedNumber(cardNumber),
                   validThru: expiryDate,
                 ),
               ),

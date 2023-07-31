@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:credit_card_validation/providers/credit_card_provider.dart';
 import 'package:credit_card_validation/providers/banned_countries_provider.dart';
-import 'package:credit_card_validation/ui/screens/credit_card_form_screen.dart';
 import 'package:credit_card_validation/ui/screens/manage_banned_countries_screen.dart';
 import 'models/creditcard.dart';
 

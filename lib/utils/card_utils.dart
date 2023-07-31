@@ -11,9 +11,8 @@ enum CardBrand {
 
 class CardUtils {
 
-  static String getCleanedNumber(String text) {
-    RegExp regExp = RegExp("r[^0-9]");
-    return text.replaceAll(regExp, '');
+  static String getCleanedNumber(String cardNumber) {
+    return cardNumber.replaceAll(RegExp(r'[^0-9]'), '');
   }
 
   static String? validateCardNum(String? input) {
