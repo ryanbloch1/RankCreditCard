@@ -13,6 +13,7 @@ class CreditCardDisplayScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
         title: Text("Saved Cards"),
       ),
       body: Padding(
@@ -28,7 +29,7 @@ class CreditCardDisplayScreen extends StatelessWidget {
                         width: double.infinity,
                         margin: EdgeInsets.only(bottom: 20),
                         child: CreditCardUi(
-                          topLeftColor: Colors.blue,
+                          topLeftColor: Colors.blueGrey,
                           cardHolderFullName: creditCard.cardHolderName,
                           cardNumber:
                               CardUtils.getCleanedNumber(creditCard.cardNumber),

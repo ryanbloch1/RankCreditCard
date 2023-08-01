@@ -57,9 +57,20 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'CardSafeguard',
+      theme: ThemeData(
+        brightness: Brightness.light,
+        primaryColor: Color(0xFF40546E),
+        fontFamily: 'Open Sans',
+        textTheme: const TextTheme(
+          displayLarge: TextStyle(fontSize: 60, fontWeight: FontWeight.bold),
+          titleLarge: TextStyle(fontSize: 30, fontStyle: FontStyle.normal),
+          bodyMedium: TextStyle(fontSize: 17, fontFamily: 'Open Sans',color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+      ),
       home: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
+          backgroundColor:  Color(0xFF40546E),
           leading: IconButton(
             icon: Icon(Icons.menu),
             onPressed: () {
@@ -76,6 +87,9 @@ class MyApp extends StatelessWidget {
               ),
               Builder(
                 builder: (context) => ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).primaryColor,
+                  ),
                   onPressed: () {
                     Navigator.pop(
                         context); // Use the context obtained from the Builder

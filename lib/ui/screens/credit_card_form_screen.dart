@@ -29,7 +29,7 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
   final TextEditingController _cardNumberController = TextEditingController();
   final TextEditingController _cvvController = TextEditingController();
   final TextEditingController _cardHolderNameController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController _expiryDateController = TextEditingController();
 
   CardBrand cardBrand = CardBrand.Invalid;
@@ -61,7 +61,7 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
 
         var formattedCardNumber = CardNumberInputFormatter()
             .formatEditUpdate(TextEditingValue(),
-            TextEditingValue(text: cardDetails.cardNumber))
+                TextEditingValue(text: cardDetails.cardNumber))
             .text;
 
         _cardNumberController.text = formattedCardNumber;
@@ -73,7 +73,7 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
 
         var formattedExpiryDate = CardMonthInputFormatter()
             .formatEditUpdate(TextEditingValue(),
-            TextEditingValue(text: cardDetails.expiryDate))
+                TextEditingValue(text: cardDetails.expiryDate))
             .text;
 
         _expiryDateController.text = formattedExpiryDate;
@@ -140,6 +140,7 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
         title: Text("Add a new card"),
       ),
       body: SingleChildScrollView(
@@ -149,9 +150,9 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
             children: [
               Container(
                 width: double.infinity,
-                margin: EdgeInsets.only(bottom: 10),
+                margin: EdgeInsets.only(bottom: 15),
                 child: CreditCardUi(
-                  topLeftColor: Colors.blue,
+                  topLeftColor: Colors.blueGrey,
                   cardHolderFullName: cardHolderName,
                   cardNumber: CardUtils.getCleanedNumber(cardNumber),
                   validThru: expiryDate,
@@ -163,22 +164,26 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    OutlinedButton(
+                    ElevatedButton(
                       onPressed: () {
                         // Handle the scan card action here
                         // You can implement the logic for scanning the card
                         scanCard();
                       },
-                      style: OutlinedButton.styleFrom(
-                        side: BorderSide(color: Colors.blue),
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.all(15),
+                        backgroundColor: Theme.of(context).primaryColor,
+                        side: BorderSide(color: Colors.blueGrey),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                       ),
                       child: Text('Scan Card',
-                          style: TextStyle(color: Colors.blue)),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold)),
                     ),
-                    SizedBox(height: 16),
+                    SizedBox(height: 20),
                     TextFormField(
                       keyboardType: TextInputType.number,
                       controller: _cardNumberController,
@@ -189,10 +194,16 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
                       ],
                       decoration: InputDecoration(
                         labelText: 'Card Number',
+                        labelStyle: TextStyle(color: Colors.black),
                         suffix: CardUtils.getCardIcon(cardBrand),
                         filled: true,
                         fillColor: Colors.grey[100],
                         border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(width: 2, color: Colors.blueGrey),
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                       ),
@@ -207,7 +218,13 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
                     TextFormField(
                       controller: _cardHolderNameController,
                       decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(width: 2, color: Colors.blueGrey),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
                         labelText: 'Card Holder Name',
+                        labelStyle: TextStyle(color: Colors.black),
                         filled: true,
                         fillColor: Colors.grey[100],
                         border: OutlineInputBorder(
@@ -224,39 +241,38 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
                     Consumer<BannedCountriesProvider>(
                       builder: (context, bannedCountriesProvider, _) {
                         List<String> availableCountries = countries
-                            .where((country) =>
-                        !bannedCountriesProvider.isCountryBanned(
-                            country))
+                            .where((country) => !bannedCountriesProvider
+                                .isCountryBanned(country))
                             .toList();
 
-                        return Container(
-                          padding: EdgeInsets.symmetric(horizontal: 16.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            border: Border.all(color: Colors.grey),
-                          ),
-                          child: DropdownButtonFormField<String>(
-                            value: selectedCountry.isEmpty
-                                ? null
-                                : selectedCountry,
-                            items: [
-                              ...availableCountries.map((String country) {
-                                return DropdownMenuItem<String>(
-                                  value: country,
-                                  child: Text(country),
-                                );
-                              }).toList(),
-                            ],
-                            decoration: InputDecoration(
-                              labelText: 'Issuing Country',
-                              fillColor: Colors.grey[100],
+                        return DropdownButtonFormField<String>(
+                          value:
+                              selectedCountry.isEmpty ? null : selectedCountry,
+                          items: [
+                            ...availableCountries.map((String country) {
+                              return DropdownMenuItem<String>(
+                                value: country,
+                                child: Text(country),
+                              );
+                            }).toList(),
+                          ],
+                          decoration: InputDecoration(
+                            labelText: 'Issuing Country',
+                            labelStyle: TextStyle(color: Colors.black),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
                             ),
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                selectedCountry = newValue ?? '';
-                              });
-                            },
+                            focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(width: 2, color: Colors.blueGrey),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
                           ),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              selectedCountry = newValue ?? '';
+                            });
+                          },
                         );
                       },
                     ),
@@ -267,10 +283,16 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
                           child: TextFormField(
                             controller: _cvvController,
                             decoration: InputDecoration(
+                              labelStyle: TextStyle(color: Colors.black),
                               labelText: 'CVV',
                               filled: true,
                               fillColor: Colors.grey[100],
                               border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 2, color: Colors.blueGrey),
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                             ),
@@ -297,10 +319,17 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
                             ],
                             decoration: InputDecoration(
                               labelText: 'Expiry Date',
+                              labelStyle: TextStyle(color: Colors.black),
+                              // Change the label text color
                               hintText: 'MM/YY',
                               filled: true,
                               fillColor: Colors.grey[100],
                               border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 2, color: Colors.blueGrey),
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                             ),
@@ -314,20 +343,24 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 16.0),
+                    SizedBox(height: 25),
                     Row(
                       children: [
                         Expanded(
                           child: ElevatedButton(
                             onPressed: _submitForm,
                             style: ElevatedButton.styleFrom(
-                              primary: Colors.blue,
+                              padding: EdgeInsets.all(15),
+                              backgroundColor: Theme.of(context).primaryColor,
+                              side: BorderSide(color: Colors.blueGrey),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                             ),
                             child: Text('Submit',
-                                style: TextStyle(color: Colors.white)),
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold)),
                           ),
                         ),
                         SizedBox(width: 16.0),
@@ -343,13 +376,17 @@ class _CreditCardFormScreenState extends State<CreditCardFormScreen> {
                               );
                             },
                             style: ElevatedButton.styleFrom(
-                              primary: Colors.green,
+                              padding: EdgeInsets.all(15),
+                              backgroundColor: Theme.of(context).primaryColor,
+                              side: BorderSide(color: Colors.blueGrey),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                             ),
-                            child: Text('View Credit Cards',
-                                style: TextStyle(color: Colors.white)),
+                            child: Text('View Your Cards',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold)),
                           ),
                         ),
                       ],
